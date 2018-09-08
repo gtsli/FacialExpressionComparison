@@ -25,8 +25,8 @@ def process(request):
                 ) as f:
                     f.write(image_bin)
                 provided_image = request.POST["provided_image"]
-                face_distance.face_dist(image_name, provided_image)
-                return HttpResponse(status=201)
+                score = 1 - face_distance.face_dist(image_name, provided_image)
+                return HttpResponse(score)
         return HttpRseponse(status=422)
     else:
         return HttpResponseNotFound

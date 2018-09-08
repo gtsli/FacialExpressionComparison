@@ -45,6 +45,28 @@ def face_dist(input_image, provided_image):
 	webcam_image_encoding = [face_recognition.face_encodings(webcam_image)[0]]
 
 	# See how far apart the webcam image is from the provided image
+	face_locations_input = face_recognition.face_landmarks(webcam_image)[0]
+	print(face_locations_input)
+	face_locations_provided = face_recognition.face_landmarks(provided_image)[0]
+	print(face_locations_provided)
+	# score = 0
+	# nose_input_x = 0
+	# nose_input_y = 0
+	# for nose_bridge_point in face_locations_input[0]["nose_bridge"][0]:
+	# 	nose_input_x += nose_bridge_point[0]
+	# 	nose_input_y += nose_bridge_point[1]
+	# nose_input_x /= 4
+	# nose_input_y /= 4
+	# nose_provided_x = 0
+	# nose_provided_y = 0
+	# for nose_bridge_point in face_locations_input[0]["nose_bridge"][0]:
+	# 	nose_provided_x += nose_bridge_point[0]
+	# 	nose_provided_y += nose_bridge_point[1]
+	# nose_provided_x /= 4
+	# nose_provided_y /= 4
+	# for key in face_locations_input:
+	# 	for point in face_locations_input[key][0]:
+	# 		score += (point[0] - nose_input_x) * 
 	face_distances = face_recognition.face_distance(webcam_image_encoding, provided_image_encoding)
 
 	for i, face_distance in enumerate(face_distances):

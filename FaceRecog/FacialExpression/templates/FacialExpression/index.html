@@ -12,25 +12,26 @@
   <body onload="init();">
     <div class="container">
       <div class="row">
-        <h1 class="col">Imitate the following facial expression:</h1>
+        <h1 class="col">Imitate the following facial expression in 3...2...1...:</h1>
       </div>
       <div class="row">
         <img class="col-6" src="/./static/input-images/{{ input_image }}">
-        <video class="col-6" onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
+        <div class="col-6">
+          <video onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
+          <h2 class="my-2">Your Submission:</h2>
+          <canvas  id="myCanvas" width="400" height="350"></canvas>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          
         </div>
       </div>
     </div>
   </body>
-    <p>
       <!-- <button onclick="startWebcam();">Start WebCam</button> -->
       <!-- <button onclick="stopWebcam();">Stop WebCam</button> -->
       <!-- <button id="takeSnapshot" onclick="snapshot();">Take Snapshot</button> -->
-
-      Screenshots : <p>
-          <canvas  id="myCanvas" width="400" height="350"></canvas>
-          </div>
-        </div>
-  </body>
   <script>
     //--------------------
     // GET USER MEDIA CODE
@@ -102,6 +103,8 @@
             imgBase64: canvas.toDataURL("image/jpeg"),
             provided_image: "{{input_image}}",
           }
+        }).done(function(data, textStatus, jqXHR) {
+          $("#video").parent().append("<h1></h1>").children("h1").last().text("Your score is: " + Math.round(data*100) + " out of 100. ").append("<a href='.'>Click here to try again.</a>");
         });
       }, 3000);
     });
