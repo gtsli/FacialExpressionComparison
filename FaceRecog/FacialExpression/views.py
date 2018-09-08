@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
+from . import face_distance
 
 import base64
 import hashlib
 
 def index(request):
-    context = {"input_image": "image0.jpg"}
+    provided_image = face_distance.get_rand_img()
+    context = {"input_image": provided_image.split("/")[-1]}
     return render(request, "FacialExpression/index.html", context)
 
 @csrf_exempt
@@ -18,12 +20,12 @@ def process(request):
                 image_bin = base64.b64decode(
                     request.POST["imgBase64"][len(prefix):]
                 )
-                with open(
-                        "temp-"
-                        + hashlib.sha224(image_bin).hexdigest()
-                        + ".jpeg", "wb"
+                image_name = "temp-" + hashlib.sha224(image_bin).hexdigest() + ".jpeg"
+                with open(image_name, "wb"
                 ) as f:
                     f.write(image_bin)
+                provided_image = request.POST["provided_image"]
+                face_distance.face_dist(image_name, provided_image)
                 return HttpResponse(status=201)
         return HttpRseponse(status=422)
     else:
