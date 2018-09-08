@@ -76,7 +76,7 @@
     //---------------------
     // TAKE A SNAPSHOT CODE
     //---------------------
-    var canvas, ctx;
+    var ctx;
 
     function init() {
     // Get the canvas and obtain a context for
@@ -91,19 +91,19 @@
     }
 
     $(document).ready(function() {
-    startWebcam();
-    setTimeout(function() {
-    let canvas = $("#myCanvas").get(0);
-    canvas.getContext("2d").drawImage($("#video").get(0), 0, 0, canvas.width, canvas.height);
-    $.ajax({
-    type: "POST",
-    url: "process",
-    data: {
-    imgBase64: canvas.toDataURL("image/jpeg"),
-    provided_image: "{{input_image}}",
-    }
-    });
-    }), 3000;
+      startWebcam();
+      setTimeout(function() {
+        let canvas = $("#myCanvas").get(0);
+        canvas.getContext("2d").drawImage($("#video").get(0), 0, 0, canvas.width, canvas.height);
+        $.ajax({
+          type: "POST",
+          url: "process",
+          data: {
+            imgBase64: canvas.toDataURL("image/jpeg"),
+            provided_image: "{{input_image}}",
+          }
+        });
+      }, 3000);
     });
   </script>
 </html>
