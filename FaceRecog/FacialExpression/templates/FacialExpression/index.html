@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+       src="https://code.jquery.com/jquery-3.3.1.min.js"
+       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+       crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </head>
+  <body onload="init();">
+    <div class="container">
+      <div class="row">
+        <div class="col-6">
+          <h1>Imitate the following facial expression:</h1>
+          <img src="/./static/input-images/{{ input_image }}">
+        </div>
+      </div>
+    </div>
+  </body>
+    <p>
+      <!-- <button onclick="startWebcam();">Start WebCam</button> -->
+      <!-- <button onclick="stopWebcam();">Stop WebCam</button> -->
+      <!-- <button id="takeSnapshot" onclick="snapshot();">Take Snapshot</button> -->
+    </p>
+    <video onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
+    <p>
+
+      Screenshots : <p>
+          <canvas  id="myCanvas" width="400" height="350"></canvas>
+          </div>
+        </div>
+  </body>
+  <script>
+    //--------------------
+    // GET USER MEDIA CODE
+    //--------------------
+    navigator.getUserMedia = ( navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia);
+
+    var video;
+    var webcamStream;
+
+    function startWebcam() {
+    if (navigator.getUserMedia) {
+    navigator.getUserMedia (
+
+    // constraints
+    {
+    video: true,
+    audio: false
+    },
+
+    // successCallback
+    function(localMediaStream) {
+    video = document.querySelector('video');
+    video.src = window.URL.createObjectURL(localMediaStream);
+    webcamStream = localMediaStream;
+    },
+
+    // errorCallback
+    function(err) {
+    console.log("The following error occured: " + err);
+    }
+    );
+    } else {
+    console.log("getUserMedia not supported");
+    }
+    }
+
+    function stopWebcam() {
+    webcamStream.stop();
+    }
+    //---------------------
+    // TAKE A SNAPSHOT CODE
+    //---------------------
+    var canvas, ctx;
+
+    function init() {
+    // Get the canvas and obtain a context for
+    // drawing in it
+    canvas = document.getElementById("myCanvas");
+    ctx = canvas.getContext('2d');
+    }
+
+    function snapshot() {
+    // Draws current image from the video element into the canvas
+    ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+    }
+
+    $(document).ready(function() {
+    startWebcam();
+    setTimeout(function() {
+    let canvas = $("#myCanvas").get(0);
+    canvas.getContext("2d").drawImage($("#video").get(0), 0, 0, canvas.width, canvas.height);
+    $.ajax({
+    type: "POST",
+    url: "process",
+    data: {
+    imgBase64: canvas.toDataURL("image/jpeg")
+    }
+    });
+    }), 3000;
+    });
+  </script>
+</html>
