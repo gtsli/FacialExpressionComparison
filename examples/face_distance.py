@@ -24,18 +24,18 @@ print(image_path_list[random_number])
 
 # Load an output image and get encondings for it
 # output_image = face_recognition.load_image_file("/home/sarah/Desktop/fall18/hackathon/home_depot_deep_learning/face_recognition/examples/obama2.jpg")
-output_image = face_recognition.load_image_file(image_path_list[random_number])
-output_image_encoding = face_recognition.face_encodings(output_image)[0]
+provided_image = face_recognition.load_image_file(image_path_list[random_number])
+provided_image_encoding = face_recognition.face_encodings(provided_image)[0]
 
 
 # Load image from the webcam
-provided_image = face_recognition.load_image_file("/home/sarah/Desktop/fall18/hackathon/home_depot_deep_learning/face_recognition/examples/obama.jpg")
+webcam_image = face_recognition.load_image_file("/home/sarah/Desktop/fall18/hackathon/home_depot_deep_learning/face_recognition/examples/obama.jpg")
 
-# Get the face encodings for the provided image
-provided_image_encoding = [face_recognition.face_encodings(provided_image)[0]]
+# Get the face encodings for the webcam image
+webcam_image_encoding = [face_recognition.face_encodings(webcam_image)[0]]
 
-# See how far apart the test image is from the known faces
-face_distances = face_recognition.face_distance(provided_image_encoding, output_image_encoding)
+# See how far apart the webcam image is from the provided image
+face_distances = face_recognition.face_distance(webcam_image_encoding, provided_image_encoding)
 
 for i, face_distance in enumerate(face_distances):
     print("{:.2} from #{} expression".format(face_distance, i))
