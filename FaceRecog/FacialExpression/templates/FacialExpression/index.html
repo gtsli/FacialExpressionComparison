@@ -12,9 +12,11 @@
   <body onload="init();">
     <div class="container">
       <div class="row">
-        <div class="col-6">
-          <h1>Imitate the following facial expression:</h1>
-          <img src="/./static/input-images/{{ input_image }}">
+        <h1 class="col">Imitate the following facial expression:</h1>
+      </div>
+      <div class="row">
+        <img class="col-6" src="/./static/input-images/{{ input_image }}" style="height:15rem;">
+        <video class="col-6" onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
         </div>
       </div>
     </div>
@@ -23,9 +25,6 @@
       <!-- <button onclick="startWebcam();">Start WebCam</button> -->
       <!-- <button onclick="stopWebcam();">Stop WebCam</button> -->
       <!-- <button id="takeSnapshot" onclick="snapshot();">Take Snapshot</button> -->
-    </p>
-    <video onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
-    <p>
 
       Screenshots : <p>
           <canvas  id="myCanvas" width="400" height="350"></canvas>
@@ -100,7 +99,8 @@
     type: "POST",
     url: "process",
     data: {
-    imgBase64: canvas.toDataURL("image/jpeg")
+    imgBase64: canvas.toDataURL("image/jpeg"),
+    provided_image: {{input_image}},
     }
     });
     }), 3000;
